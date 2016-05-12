@@ -23,6 +23,8 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        Notification n = new Notification();
+        startForeground( 1989,n);
         Log.i("MyMsg", "thread onStartCommand");
         AsyncL as = new AsyncL(getApplicationContext());
             as.forceLoad();
@@ -32,6 +34,19 @@ public class MyService extends Service {
 
         return START_STICKY;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i("MyMsg", "onDestroy");
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Log.i("MyMsg", "onLowMemory");
+    }
+
     public class AsyncL extends AsyncTaskLoader{
 
         public AsyncL(Context context) {
@@ -40,8 +55,7 @@ public class MyService extends Service {
 
         @Override
         public Object loadInBackground() {
-            Notification n = new Notification();
-            startForeground( 1989,n);
+
             long sec = 1000*5;
             try {
                 while (true) {
